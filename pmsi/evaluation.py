@@ -55,6 +55,14 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray,
     """
     y_true = np.asarray(y_true, dtype=float)
     y_pred = np.asarray(y_pred, dtype=float)
+    
+    valid = ~np.isnan(y_true) & ~np.isnan(y_pred)
+    if not np.any(valid):
+        return {"RMSE": np.nan, "MAE": np.nan, "MAPE": np.nan,
+                "SMAPE": np.nan, "Bias": np.nan, "MedAE": np.nan}
+                
+    y_true = y_true[valid]
+    y_pred = y_pred[valid]
     err = y_pred - y_true
     abs_err = np.abs(err)
 
@@ -125,11 +133,11 @@ def evaluate_method(
     print('=' * 72)
 
     # --- Step 1: build pairs with the method-specific seed ------------------
-    random.seed(seed)
+    rng = random.Random(seed)
     np.random.seed(seed)
     N = len(good_k) * n_per_key
     pairs = list(zip(n_per_key * list(good_k),
-                     random.choices(binary_masks, k=N)))
+                     rng.choices(binary_masks, k=N)))
     print(f"  Built {len(pairs)} (data, mask) pairs.")
 
     # --- Step 2: per-pair evaluation with progress bar ----------------------

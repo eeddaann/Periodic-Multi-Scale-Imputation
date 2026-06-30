@@ -172,8 +172,9 @@ class PMSIImputer:
             raise KeyError(f"Could not resolve standard deviations from weights: {list(weights.keys())}")
 
     def fit(self, pivot_d: dict, binary_d: dict, good_k: list, binary_masks: list, n_pairs_per_key: int = 10, shape: tuple = None):
-        rng = random.Random(self.seed)
+        random.seed(self.seed)
         np.random.seed(self.seed)
+        rng = random.Random(self.seed)
 
         # Determine target shape once, before the objective function
         if shape is not None:

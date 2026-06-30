@@ -1,2 +1,4 @@
 pmsi/__pycache__/*
 benchmark_outputs/*
+tests/__pycache__/*
+scratch/*

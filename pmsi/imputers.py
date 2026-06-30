@@ -126,11 +126,11 @@ if TORCH_AVAILABLE:
                            n_per_key: int = 10,
                            seed: int = 2025) -> TensorDataset:
         """Build a TensorDataset of (X, Y) where X = (vals, mask) channels and Y = original."""
-        random.seed(seed)
+        rng = random.Random(seed)
         np.random.seed(seed)
         
         N = len(good_k) * n_per_key
-        pairs = list(zip(n_per_key * list(good_k), random.choices(binary_masks, k=N)))
+        pairs = list(zip(n_per_key * list(good_k), rng.choices(binary_masks, k=N)))
         
         X_list, Y_list = [], []
         for orig_key, mask_key in pairs:
