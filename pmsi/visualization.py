@@ -89,8 +89,8 @@ def plot_pmsi_kernel(model, title_suffix=""):
         raise ValueError("The provided PMSIImputer model has not been fitted yet. Please run .fit() first.")
     
     # Extract optimized parameters safely (handling different key naming styles)
-    x_std = model.best_params_.get('x', model.best_params_.get('x_stddev'))
-    y_std = model.best_params_.get('y', model.best_params_.get('y_stddev', x_std))
+    x_std = model.best_params_.get('x_1', model.best_params_.get('x', model.best_params_.get('x_stddev')))
+    y_std = model.best_params_.get('x_0', model.best_params_.get('y', model.best_params_.get('y_stddev', x_std)))
     
     # Retrieve the exact kernel array from the model cache
     kernel_obj = model._get_kernel(x_std, y_std)
